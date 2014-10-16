@@ -11,12 +11,16 @@ import Foundation
 class Api<T:Jsonable> : SequenceType {
     
     var entityList : [T] = []
-    var baseUrl = "http://jsonplaceholder.typicode.com/"
+    var baseUrl: String { get { return "" } }
+    
     func entityBaseUrl() -> NSURL {
-        return NSURL(string:"\(baseUrl)\(T.urlName())")!
+        var url = "\(baseUrl)\(T.urlName())"
+        return NSURL(string:url)!
     }
+    
     func entityUrl(id: String) -> NSURL {
-        return NSURL(string:"\(baseUrl)\(T.urlName())/\(id)")!
+        var url = "\(baseUrl)\(T.urlName())/\(id)"
+        return NSURL(string:url)!
     }
     
     //

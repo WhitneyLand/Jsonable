@@ -16,7 +16,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var getSwiftButton: UIButton!
     
     var car = Car()
-    var photos = Api<Photo>()
+    var photos = SampleApi<Photo>()
+    var users = SampleApi<User>()
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B643CB319F05E3A0085B9F4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B643CB219F05E3A0085B9F4 /* User.swift */; };
+		3B643CB519F060E00085B9F4 /* SampleApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B643CB419F060E00085B9F4 /* SampleApi.swift */; };
 		3BDE638219EF52C600FA61C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDE638119EF52C600FA61C1 /* AppDelegate.swift */; };
 		3BDE638419EF52C600FA61C1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDE638319EF52C600FA61C1 /* ViewController.swift */; };
 		3BDE638719EF52C600FA61C1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BDE638519EF52C600FA61C1 /* Main.storyboard */; };
@@ -34,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3B643CB219F05E3A0085B9F4 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		3B643CB419F060E00085B9F4 /* SampleApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleApi.swift; sourceTree = "<group>"; };
 		3BDE637C19EF52C600FA61C1 /* Jsonable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jsonable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BDE638019EF52C600FA61C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BDE638119EF52C600FA61C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -148,6 +152,8 @@
 			children = (
 				3BDE63AE19EF54AE00FA61C1 /* Car.swift */,
 				3BDE63B219EF5E5500FA61C1 /* Photo.swift */,
+				3B643CB219F05E3A0085B9F4 /* User.swift */,
+				3B643CB419F060E00085B9F4 /* SampleApi.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -261,7 +267,9 @@
 				3BDE638419EF52C600FA61C1 /* ViewController.swift in Sources */,
 				3BDE63B719EF6A8800FA61C1 /* README.md in Sources */,
 				3BDE63A619EF547200FA61C1 /* JsonableUtility.swift in Sources */,
+				3B643CB319F05E3A0085B9F4 /* User.swift in Sources */,
 				3BDE638219EF52C600FA61C1 /* AppDelegate.swift in Sources */,
+				3B643CB519F060E00085B9F4 /* SampleApi.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,6 +461,7 @@
 				3BDE639D19EF52C600FA61C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3BDE639E19EF52C600FA61C1 /* Build configuration list for PBXNativeTarget "JsonableTests" */ = {
 			isa = XCConfigurationList;
@@ -461,6 +470,7 @@
 				3BDE63A019EF52C600FA61C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
