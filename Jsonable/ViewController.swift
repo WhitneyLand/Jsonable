@@ -62,14 +62,20 @@ class ViewController: UIViewController {
 
     @IBAction func getSwift_TouchUp(sender: AnyObject) {
         
-        photos.get(1) { (result) in
+        users.get(1) { (result) in
             
-            dispatch_async(dispatch_get_main_queue(), {     // Run UI code on main thread
-                var photo = self.photos[0]
-                self.swiftView.text = photo.description
-            })
+            println(result.text)
+            
+            if result.success {
+                dispatch_async(dispatch_get_main_queue(), {     // Run UI code on main thread
+                    
+                    var user = self.users[0]
+                    self.swiftView.text = user.description
+                })
+            }
         }
         
+/*
         photos.get() { (result) in
             
             dispatch_async(dispatch_get_main_queue(), {     // Run UI code on main thread
@@ -78,6 +84,7 @@ class ViewController: UIViewController {
                 }
             })
         }
+*/
     }
     
     func test() {

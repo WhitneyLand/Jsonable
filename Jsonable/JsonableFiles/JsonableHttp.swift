@@ -19,7 +19,8 @@ class Http {
             else {
                 println("Http.get failed network: \(httpResponse.statusCode) \(httpResponse.URL)")
             }
-            completionHandler(result: HttpResult(data: data, response: httpResponse, error: error))
+            var result = HttpResult(data: data, response: httpResponse, error: error)
+            completionHandler(result: result)
         }
         task.resume()
     }

@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Jsonable/JsonableFiles/JsonableApi.swift"
-            timestampString = "435184432.75455"
+            timestampString = "435186985.698863"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
             landmarkName = "jsonArrayToSwiftArray(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Jsonable/JsonableFiles/JsonableApi.swift"
-            timestampString = "435184432.75455"
+            timestampString = "435186985.698863"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
             landmarkName = "get(_:completionHandler:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -244,11 +244,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Jsonable/JsonableFiles/JsonableApi.swift"
-            timestampString = "435184429.843466"
+            timestampString = "435185133.96817"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "17"
-            endingLineNumber = "17"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
             landmarkName = "entityBaseUrl()"
             landmarkType = "5">
          </BreakpointContent>
@@ -260,12 +260,242 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Jsonable/JsonableFiles/JsonableApi.swift"
-            timestampString = "435184431.220415"
+            timestampString = "435185133.96817"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "21"
-            endingLineNumber = "21"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
             landmarkName = "entityUrl(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Jsonable/ViewController.swift"
+            timestampString = "435185470.307835"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "getSwift_TouchUp(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Jsonable/ViewController.swift"
+            timestampString = "435185352.516381"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "getSwift_TouchUp(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Jsonable/JsonableFiles/JsonableApi.swift"
+            timestampString = "435186985.698863"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
+            landmarkName = "get(_:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Jsonable.Api.get &lt;A&gt;(Jsonable.Api&lt;A&gt;)(Swift.ImplicitlyUnwrappedOptional&lt;(result : Jsonable.HttpResult) -&gt; ()&gt;) -&gt; ()"
+                  moduleName = "Jsonable"
+                  urlString = "file:///Users/lwhitney/Dropbox/Apps/Jsonable/Jsonable/JsonableFiles/JsonableApi.swift"
+                  timestampString = "435186618.689497"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "167">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Jsonable.Api.(get &lt;A&gt;(Jsonable.Api&lt;A&gt;) -&gt; (Swift.ImplicitlyUnwrappedOptional&lt;(result : Jsonable.HttpResult) -&gt; ()&gt;) -&gt; ()).(closure #1)"
+                  moduleName = "Jsonable"
+                  urlString = "file:///Users/lwhitney/Dropbox/Apps/Jsonable/Jsonable/JsonableFiles/JsonableApi.swift"
+                  timestampString = "435186618.689713"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "45">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "reabstraction thunk helper &lt;T_0_0 where T_0_0: Jsonable.Jsonable&gt; from @callee_owned (@owned Jsonable.HttpResult) -&gt; (@unowned ()) to @callee_owned (@in (result : Jsonable.HttpResult)) -&gt; (@out ())"
+                  moduleName = "Jsonable"
+                  urlString = "file:///Users/lwhitney/Dropbox/Apps/Jsonable/Jsonable/JsonableFiles/JsonableApi.swift"
+                  timestampString = "435186618.689935"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "12">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Jsonable/ViewController.swift"
+            timestampString = "435185660.593848"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "getSwift_TouchUp(_:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Jsonable.ViewController.getSwift_TouchUp (Jsonable.ViewController)(Swift.AnyObject) -&gt; ()"
+                  moduleName = "Jsonable"
+                  urlString = "file:///Users/lwhitney/Dropbox/Apps/Jsonable/Jsonable/ViewController.swift"
+                  timestampString = "435186618.690998"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "65"
+                  endingLineNumber = "65"
+                  offsetFromSymbolStart = "33">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Jsonable.ViewController.(getSwift_TouchUp (Jsonable.ViewController) -&gt; (Swift.AnyObject) -&gt; ()).(closure #1)"
+                  moduleName = "Jsonable"
+                  urlString = "file:///Users/lwhitney/Dropbox/Apps/Jsonable/Jsonable/ViewController.swift"
+                  timestampString = "435186618.691239"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "65"
+                  endingLineNumber = "65"
+                  offsetFromSymbolStart = "19">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "reabstraction thunk helper from @callee_owned (@owned Jsonable.HttpResult) -&gt; (@unowned ()) to @callee_owned (@in (result : Jsonable.HttpResult)) -&gt; (@out ())"
+                  moduleName = "Jsonable"
+                  urlString = "file:///Users/lwhitney/Dropbox/Apps/Jsonable/Jsonable/ViewController.swift"
+                  timestampString = "435186618.691458"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "65"
+                  endingLineNumber = "65"
+                  offsetFromSymbolStart = "4">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Jsonable/JsonableFiles/JsonableApi.swift"
+            timestampString = "435186985.698863"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
+            landmarkName = "get(_:completionHandler:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Jsonable/JsonableFiles/JsonableHttp.swift"
+            timestampString = "435186756.111613"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "get(_:completionHandler:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Jsonable.Http.(get (Jsonable.Http) -&gt; (ObjectiveC.NSURL, completionHandler : Swift.ImplicitlyUnwrappedOptional&lt;(result : Jsonable.HttpResult) -&gt; ()&gt;) -&gt; ()).(closure #1)"
+                  moduleName = "Jsonable"
+                  urlString = "file:///Users/lwhitney/Dropbox/Apps/Jsonable/Jsonable/JsonableFiles/JsonableHttp.swift"
+                  timestampString = "435186897.254612"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "2035">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "reabstraction thunk helper from @callee_owned (@in (result : Jsonable.HttpResult)) -&gt; (@out ()) to @callee_owned (@owned Jsonable.HttpResult) -&gt; (@unowned ())"
+                  moduleName = "Jsonable"
+                  urlString = "file:///Users/lwhitney/Dropbox/Apps/Jsonable/Jsonable/JsonableFiles/JsonableHttp.swift"
+                  timestampString = "435186897.254895"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "12">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Jsonable/JsonableFiles/JsonableHttp.swift"
+            timestampString = "435186781.546796"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
+            landmarkName = "init(data:response:error:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
