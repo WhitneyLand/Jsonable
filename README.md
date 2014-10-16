@@ -14,11 +14,11 @@ Example
 > class Photo : Jsonable {      
 > &nbsp;&nbsp;var id: Int = 0  
 > &nbsp;&nbsp;var title: String = ""  
-> &nbsp;&nbsp;var url = NSURL()
+> &nbsp;&nbsp;var url = NSURL()<br/>
 > }  
 
 > var photo = Photo()  
-> photo.id = 1  
+> photo.id = 4  
 > photo.title = "A day at the beach..."  
 > photo.url = NSURL(string: "https://whitneyland.com/photo.jpg")!  
 > photo.toJsonString()  
