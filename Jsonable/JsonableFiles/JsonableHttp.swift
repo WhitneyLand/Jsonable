@@ -58,7 +58,7 @@ class HttpResult {
         
         statusCode = response!.statusCode
         
-        if error != nil && statusCode == 200 {
+        if error == nil && statusCode >= 200 && statusCode < 300 {
             success = true
         }
         else {
