@@ -5,7 +5,7 @@ Use Swift classes to read and write JSON.
 
 Benefits
 -
-- No special syntax required.  Forget having to do this ["property"].
+- No special syntax required.  Forget having to do ["property"]
 - No manual configuration, just inherit from Jsonable
 - Serialize/Deserialize to JSON text, dictionary, or console
 
@@ -21,7 +21,7 @@ Example
 > var photo = Photo()  
 > photo.id = 1  
 > photo.title = "A day at the beach..."  
-> photo.url = NSURL(string: "")!  
+> photo.url = NSURL(string: "https://whitneyland.com/photo.jpg")!  
 > photo.toJsonString()  
 
 Getting Started
