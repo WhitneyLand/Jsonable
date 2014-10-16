@@ -79,6 +79,12 @@ class ViewController: UIViewController {
         }
     }
     
+    func test() {
+        photos.post() { (result) in
+            println(result.text)
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

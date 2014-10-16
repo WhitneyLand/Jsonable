@@ -24,11 +24,11 @@ class Api<T:Jsonable> : SequenceType {
     //
     func get(completionHandler: ((result: HttpResult) -> Void)!) {
 
-        Http().Get(self.entityBaseUrl()) { (result) in
+        Http().get(self.entityBaseUrl()) { (result) in
             
-            var jsonError: NSError?
+            var error: NSError?
             if let jsonArray: AnyObject? = NSJSONSerialization.JSONObjectWithData(result.data!,
-                options: .AllowFragments, error: &jsonError) as AnyObject! {
+                options: .AllowFragments, error: &error) as AnyObject! {
                 self.entityList = self.jsonArrayToSwiftArray(jsonArray as NSArray)
             }
             completionHandler(result: result)
@@ -40,7 +40,7 @@ class Api<T:Jsonable> : SequenceType {
     //
     func get(id: String, completionHandler: ((result: HttpResult) -> Void)!) {
         
-        Http().Get(self.entityUrl(id)) { (result) in
+        Http().get(self.entityUrl(id)) { (result) in
 
             let entity = self.createType()
             entity.fromJsonData(result.data!)
@@ -57,9 +57,20 @@ class Api<T:Jsonable> : SequenceType {
     
     //
     // TODO:
-    // Post Json from serialized Swift objects
+    // Post Json from array of serialized Swift objects
     //
     func post(completionHandler: ((result: HttpResult) -> Void)!) {
+        
+        var error: NSError?
+        var jsonArray = swiftArrayToJsonArray()
+        var jsonData = NSJSONSerialization.dataWithJSONObject(jsonArray, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
+
+        Http().post(self.entityBaseUrl(), data:jsonData!) { (result) in
+            
+            // Update Swift objects with any newly created Id's returned from the POST
+            
+            completionHandler(result: result)
+        }
     }
     
     func jsonArrayToSwiftArray(jsonArray: NSArray) -> [T] {

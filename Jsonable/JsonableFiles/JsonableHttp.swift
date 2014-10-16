@@ -10,27 +10,22 @@ import Foundation
 
 class Http {
 
-    //
-    // Load data from server API
-    //
-    func Get(url: NSURL, completionHandler: ((result: HttpResult) -> Void)!) {
+    func get(url: NSURL, completionHandler: ((result: HttpResult) -> Void)!) {
         let task = NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
             
             let httpResponse: NSHTTPURLResponse = response as NSHTTPURLResponse
             if httpResponse.statusCode == 200 {
             }
             else {
-                println("Http.Get failed network: \(httpResponse.statusCode) \(httpResponse.URL)")
+                println("Http.get failed network: \(httpResponse.statusCode) \(httpResponse.URL)")
             }
             completionHandler(result: HttpResult(data: data, response: httpResponse, error: error))
         }
         task.resume()
     }
     
-    func Post(url: NSURL, jsonObject:AnyObject, completionHandler: ((result: HttpResult) -> Void)!) {
+    func post(url: NSURL, data: NSData, completionHandler: ((result: HttpResult) -> Void)!) {
         
-        var jsonError: NSError?
-        var data = NSJSONSerialization.dataWithJSONObject(jsonObject, options: NSJSONWritingOptions.PrettyPrinted, error: &jsonError)
         let httpRequest = NSMutableURLRequest(URL: url)
         httpRequest.HTTPMethod = "POST"
 
@@ -40,11 +35,10 @@ class Http {
             if httpResponse.statusCode == 200 {
             }
             else {
-                println("Http.Post failed network: \(httpResponse.statusCode) \(httpResponse.URL)")
+                println("Http.post failed network: \(httpResponse.statusCode) \(httpResponse.URL)")
             }
             completionHandler(result: HttpResult(data: data, response: httpResponse, error: error))
         }
-
         task.resume()
     }
 }
@@ -73,8 +67,10 @@ class HttpResult {
     
     var text : String {
         get {
-            var s = NSString(data: data!, encoding:NSUTF8StringEncoding)
-            return s!
+            var s = ""
+            s += "Status: \(statusCode)\n"
+            s += "Data: \(NSString(data: data!, encoding:NSUTF8StringEncoding)!)"
+            return s
         }
     }
 }
