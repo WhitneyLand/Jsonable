@@ -8,41 +8,26 @@
 
 import Foundation
 
-class JsonHttpResult {
+class Http {
 
-    var response: NSHTTPURLResponse?
-    var data : NSData?
-    var error : NSError?
-    var success : Bool
-    init(data : NSData?, response: NSHTTPURLResponse?, error : NSError?) {
-        self.data = data
-        self.response = response
-        self.error = error
-        
-        if error != nil && response!.statusCode == 200 {
-            success = true
+    //
+    // Load data from server API
+    //
+    func Get(url: NSURL, completionHandler: ((result: HttpResult) -> Void)!) {
+        let task = NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
+            
+            let httpResponse: NSHTTPURLResponse = response as NSHTTPURLResponse
+            if httpResponse.statusCode == 200 {
+            }
+            else {
+                println("Http.Get failed network: \(httpResponse.statusCode) \(httpResponse.URL)")
+            }
+            completionHandler(result: HttpResult(data: data, response: httpResponse, error: error))
         }
-        else {
-            success = false
-        }
+        task.resume()
     }
     
-    var text : String {
-        get {
-            var s = NSString(data: data!, encoding:NSUTF8StringEncoding)
-            return s!
-        }
-    }
-}
-
-class JsonHttp {
-    
-    var data: AnyObject?
-    
-    init() {
-    }
-
-    func Post(url: NSURL, jsonObject:AnyObject, completionHandler: ((result: JsonHttpResult) -> Void)!) {
+    func Post(url: NSURL, jsonObject:AnyObject, completionHandler: ((result: HttpResult) -> Void)!) {
         
         var jsonError: NSError?
         var data = NSJSONSerialization.dataWithJSONObject(jsonObject, options: NSJSONWritingOptions.PrettyPrinted, error: &jsonError)
@@ -55,40 +40,41 @@ class JsonHttp {
             if httpResponse.statusCode == 200 {
             }
             else {
-                println("JsonHttp.Post failed network: \(httpResponse.statusCode) \(httpResponse.URL)")
+                println("Http.Post failed network: \(httpResponse.statusCode) \(httpResponse.URL)")
             }
-            completionHandler(result: JsonHttpResult(data: data, response: httpResponse, error: error))
+            completionHandler(result: HttpResult(data: data, response: httpResponse, error: error))
         }
 
         task.resume()
     }
+}
+
+class HttpResult {
     
-    //
-    // Load data from server API
-    //
-    func Get(url: NSURL, completionHandler: ((result: JsonHttpResult) -> Void)!) {
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
-            
-            let httpResponse: NSHTTPURLResponse = response as NSHTTPURLResponse
-            if httpResponse.statusCode == 200 {
-                var jsonError: NSError?
-                let jsonObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data,
-                    options: .AllowFragments,
-                    error: &jsonError)
-                    as AnyObject!
-                
-                if let json: AnyObject = jsonObject {
-                    self.data = json
-                }
-                else {
-                    println("JsonHttp.Get failed data: \(httpResponse.statusCode) \(httpResponse.URL)")
-                }
-            }
-            else {
-                println("JsonHttp.Get failed network: \(httpResponse.statusCode) \(httpResponse.URL)")
-            }
-            completionHandler(result: JsonHttpResult(data: data, response: httpResponse, error: error))
+    var response: NSHTTPURLResponse?
+    var data: NSData?
+    var error: NSError?
+    var statusCode: Int = 0
+    var success: Bool = false
+    init(data: NSData?, response: NSHTTPURLResponse?, error : NSError?) {
+        self.data = data
+        self.response = response
+        self.error = error
+        
+        statusCode = response!.statusCode
+        
+        if error != nil && statusCode == 200 {
+            success = true
         }
-        task.resume()
+        else {
+            success = false
+        }
+    }
+    
+    var text : String {
+        get {
+            var s = NSString(data: data!, encoding:NSUTF8StringEncoding)
+            return s!
+        }
     }
 }

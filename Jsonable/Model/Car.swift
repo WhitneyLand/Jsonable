@@ -10,6 +10,7 @@ import Foundation
 class Car : Jsonable {
 
     override class func urlName() -> String { return "cars" }
+    override class func createInstance() -> Jsonable { return Car() }
 
     // Optional  -  may or may not exist in Json
     var id : String?

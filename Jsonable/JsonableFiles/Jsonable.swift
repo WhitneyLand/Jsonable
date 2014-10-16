@@ -7,14 +7,22 @@
 //
 import Foundation
 
-
 class Jsonable : NSObject {
     
     class func urlName() -> String { return "" }
     class func dateFormat() -> String { return DateFormat.Iso8601 }
+    class func createInstance() -> Jsonable { return Jsonable() }
     
     func fromJsonDictionary(d: NSDictionary) {
-        self.setValuesForKeysWithDictionary(d)
+        setValuesForKeysWithDictionary(d)
+    }
+    
+    func fromJsonData(data: NSData) {
+        var jsonError: NSError?
+        let jsonObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data,
+            options: .AllowFragments,
+            error: &jsonError)
+        fromJsonDictionary(jsonObject as NSDictionary)
     }
     
     func toJsonString() -> NSString! {

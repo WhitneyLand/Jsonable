@@ -54,7 +54,6 @@ extension NSDate {
             return dateString
         }
     }
-
 }
 
 extension String {
@@ -87,7 +86,9 @@ class Reflector {
             }
             else
             {
-                s += "  \(mirror[i].0): \(mirror[i].1.summary)\n"
+                var name = mirror[i].0
+                var value = mirror[i].1.value
+                s += "  \(name): \(value)\n"
             }
         }
         return s

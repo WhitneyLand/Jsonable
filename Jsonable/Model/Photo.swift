@@ -10,10 +10,11 @@ import Foundation
 class Photo : Jsonable {
     
     override class func urlName() -> String { return "photos" }
+    override class func createInstance() -> Jsonable { return Photo() }
     
-    var id: Double = 0
-    var albumId: Double = 0
-    var title: String = ""
+    var id = 0
+    var albumId = 0
+    var title = ""
     var url = NSURL()
     var thumbnailUrl = NSURL()
 }

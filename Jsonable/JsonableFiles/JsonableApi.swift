@@ -7,49 +7,71 @@
 //
 import Foundation
 
+
 class Api<T:Jsonable> : SequenceType {
     
     var entityList : [T] = []
     var baseUrl = "http://jsonplaceholder.typicode.com/"
+    func entityBaseUrl() -> NSURL {
+        return NSURL(string:"\(baseUrl)\(T.urlName())")!
+    }
+    func entityUrl(id: String) -> NSURL {
+        return NSURL(string:"\(baseUrl)\(T.urlName())/\(id)")!
+    }
     
     //
     // Get an array of Json objects and deserialize them to Swift
     //
-    func get(completionHandler: ((result: JsonHttpResult) -> Void)!) {
-        dispatch_async(dispatch_get_main_queue(), {
-            let jsonHttp = JsonHttp()
-            let url = NSURL(string:"\(self.baseUrl)\(T.urlName())")!
-            jsonHttp.Get(url) { (result) in
-                self.entityList = self.jsonArrayToSwiftArray(jsonHttp.data as NSArray)
-                completionHandler(result: result)
+    func get(completionHandler: ((result: HttpResult) -> Void)!) {
+
+        Http().Get(self.entityBaseUrl()) { (result) in
+            
+            var jsonError: NSError?
+            if let jsonArray: AnyObject? = NSJSONSerialization.JSONObjectWithData(result.data!,
+                options: .AllowFragments, error: &jsonError) as AnyObject! {
+                self.entityList = self.jsonArrayToSwiftArray(jsonArray as NSArray)
             }
-        })
+            completionHandler(result: result)
+        }
     }
 
     //
-    // TODO:
     // Get a single Json object and deserialize it to Swift
     //
-    func get(id: String, completionHandler: ((result: JsonHttpResult) -> Void)!) {
+    func get(id: String, completionHandler: ((result: HttpResult) -> Void)!) {
+        
+        Http().Get(self.entityUrl(id)) { (result) in
+
+            let entity = self.createType()
+            entity.fromJsonData(result.data!)
+            self.entityList.append(entity)
+            completionHandler(result: result)
+        }
     }
 
+    func get(id: Int, completionHandler: ((result: HttpResult) -> Void)!) {        
+        get("\(id)") { (result) in
+            completionHandler(result: result)
+        }
+    }
+    
     //
     // TODO:
     // Post Json from serialized Swift objects
     //
-    func post(completionHandler: ((result: JsonHttpResult) -> Void)!) {
+    func post(completionHandler: ((result: HttpResult) -> Void)!) {
     }
     
     func jsonArrayToSwiftArray(jsonArray: NSArray) -> [T] {
         var entityList : [T] = []
         for jsonDictionary in jsonArray {
-            let entity = T()
+            let entity = createType()
             entity.fromJsonDictionary(jsonDictionary as NSDictionary)
-            entityList.append(entity)
+            entityList.append(entity as T)
         }
         return entityList
     }
-
+    
     func swiftArrayToJsonArray() -> NSArray {
         var array = NSMutableArray()
 
@@ -83,5 +105,11 @@ class Api<T:Jsonable> : SequenceType {
     
     func append(newEntity : T) {
         entityList.append(newEntity)
+    }
+    
+    // Work around for Swift generics not supporting virtual constructors
+    // http://stackoverflow.com/questions/26280176/swift-generics-not-preserving-type
+    func createType() -> T {
+        return T.createInstance() as T
     }
 }

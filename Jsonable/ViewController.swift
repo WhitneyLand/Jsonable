@@ -5,8 +5,8 @@
 //  Created by Lee Whitney on 10/15/14.
 //  Copyright (c) 2014 WhitneyLand. All rights reserved.
 //
-
 import UIKit
+
 
 class ViewController: UIViewController {
 
@@ -55,27 +55,28 @@ class ViewController: UIViewController {
         carGuage2.analog = true
         car.gauges.append(carGuage2)
         
+        //jsonView.text = car.description        
         jsonView.text = car.toJsonString()
     }
 
     @IBAction func getSwift_TouchUp(sender: AnyObject) {
-
-        // TODO: Fix bug in deserialization
-/*
-        var photo = Photo()
-        photo.id = 1
-        photo.albumId = 2
-        photo.url = NSURL(string: "")!
-        photo.thumbnailUrl = NSURL(string: "")!
-
-        swiftView.text = photo.toJsonString()
+        
+        photos.get(1) { (result) in
+            
+            dispatch_async(dispatch_get_main_queue(), {     // Run UI code on main thread
+                var photo = self.photos[0]
+                self.swiftView.text = photo.description
+            })
+        }
         
         photos.get() { (result) in
-            for photo in self.photos {
-                println(photo.description)
-            }
+            
+            dispatch_async(dispatch_get_main_queue(), {     // Run UI code on main thread
+                for photo in self.photos {
+                    println(photo.description)
+                }
+            })
         }
-*/
     }
     
     override func didReceiveMemoryWarning() {
