@@ -14,8 +14,7 @@ Example
 > class Photo : Jsonable {      
 > &nbsp;&nbsp;var id: Int = 0  
 > &nbsp;&nbsp;var title: String = ""  
-> &nbsp;&nbsp;var url = NSURL()  
-> &nbsp;&nbsp;override class func urlName() -> String { return "photos" }  
+> &nbsp;&nbsp;var url = NSURL()
 }  
 
 > var photo = Photo()  
