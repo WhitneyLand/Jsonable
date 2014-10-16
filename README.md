@@ -15,7 +15,7 @@ Example
 > &nbsp;&nbsp;var id: Int = 0  
 > &nbsp;&nbsp;var title: String = ""  
 > &nbsp;&nbsp;var url = NSURL()
-}  
+> }  
 
 > var photo = Photo()  
 > photo.id = 1  
