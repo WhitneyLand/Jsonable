@@ -26,7 +26,10 @@ class Car : Jsonable {
     var url = NSURL()
 
     // Json array of strings
-    var upgrades : [String]?
+    var upgrades: [String]?
+    
+    // Json array of numbers
+    var pcodes: [Int] = []
 
     // Json nested object
     var engine: Engine = Engine()

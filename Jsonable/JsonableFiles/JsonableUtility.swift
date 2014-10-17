@@ -88,6 +88,18 @@ class Reflector {
             {
                 var name = mirror[i].0
                 var value = mirror[i].1.value
+                var disposition = mirror[i].1.disposition
+                if MirrorDisposition.IndexContainer == disposition {
+                    s += "  []: \(mirror[i].1.count) items."
+                    return s
+                }
+                
+                if name == "__test" {
+                    var summary = mirror[i].1.summary
+                    var valueType = mirror[i].1.valueType
+                    var count = mirror[i].1.count
+                }
+                
                 s += "  \(name): \(value)\n"
             }
         }

@@ -9,9 +9,32 @@ import Foundation
 
 class SampleApi<T:Jsonable> : Api<T> {
     
-    override var baseUrl: String { get { return "http://jsonplaceholder.typicode.com/" } }
+    override init() {
+        super.init()
+        
+        baseUrl = "http://jsonplaceholder.typicode.com/"
+    }
     
-    func postResponseUpdate<T:Jsonable>(entity: T, response: NSDictionary) {
-//        var photo: Photo = entity as Photo
+
+    override func postResponseUpdate(index: Int, entity: Jsonable, resultJsonObject: AnyObject) {
+        
+        if let array = resultJsonObject as? NSArray {
+            println("Received JSON Array response.")
+            for item in array {
+                println(item)
+            }
+        }
+        else if let item = resultJsonObject as? NSDictionary {
+            println("Received JSON Object response.")
+        }
+        
+/*
+        var photo: Photo = entity as Photo
+        photo.id = 3
+        photo.albumId = 5
+        photo.url = NSURL(string: "http://")!
+        photo.thumbnailUrl = "ftp://"
+        println(photo)
+*/
     }
 }

@@ -14,7 +14,12 @@ class Jsonable : NSObject {
     class func createInstance() -> Jsonable { return Jsonable() }
     
     func fromJsonDictionary(d: NSDictionary) {
-        setValuesForKeysWithDictionary(d)
+        
+        for (key,value) in d {
+            let propertyName = key as String
+            setValue(value, forKey: propertyName)
+        }
+//        setValuesForKeysWithDictionary(d)
     }
     
     func fromJsonData(data: NSData) {
@@ -23,6 +28,11 @@ class Jsonable : NSObject {
             options: .AllowFragments,
             error: &jsonError)
         fromJsonDictionary(jsonObject as NSDictionary)
+    }
+    
+    func fromJsonString(text: String) {
+        let data = text.dataUsingEncoding(NSUTF8StringEncoding)!
+        fromJsonData(data)
     }
     
     func toJsonString() -> NSString! {

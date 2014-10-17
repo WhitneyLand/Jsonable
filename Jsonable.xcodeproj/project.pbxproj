@@ -23,6 +23,7 @@
 		3BDE63B519EF5FF200FA61C1 /* JsonableApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDE63B419EF5FF200FA61C1 /* JsonableApi.swift */; };
 		3BDE63B719EF6A8800FA61C1 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 3BDE63B619EF6A8800FA61C1 /* README.md */; };
 		3BDE63B919EF6ACD00FA61C1 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3BDE63B819EF6ACD00FA61C1 /* LICENSE.txt */; };
+		3BFBBA7B19F1B11E006E2F9C /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFBBA7A19F1B11E006E2F9C /* Test.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		3BDE63B419EF5FF200FA61C1 /* JsonableApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonableApi.swift; sourceTree = "<group>"; };
 		3BDE63B619EF6A8800FA61C1 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3BDE63B819EF6ACD00FA61C1 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		3BFBBA7A19F1B11E006E2F9C /* Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +156,7 @@
 				3BDE63B219EF5E5500FA61C1 /* Photo.swift */,
 				3B643CB219F05E3A0085B9F4 /* User.swift */,
 				3B643CB419F060E00085B9F4 /* SampleApi.swift */,
+				3BFBBA7A19F1B11E006E2F9C /* Test.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 				3BDE63A719EF547200FA61C1 /* JsonableHttp.swift in Sources */,
 				3BDE63B019EF54AE00FA61C1 /* Car.swift in Sources */,
 				3BDE63B519EF5FF200FA61C1 /* JsonableApi.swift in Sources */,
+				3BFBBA7B19F1B11E006E2F9C /* Test.swift in Sources */,
 				3BDE638419EF52C600FA61C1 /* ViewController.swift in Sources */,
 				3BDE63B719EF6A8800FA61C1 /* README.md in Sources */,
 				3BDE63A619EF547200FA61C1 /* JsonableUtility.swift in Sources */,

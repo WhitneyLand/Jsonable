@@ -21,6 +21,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
     }
 
     @IBAction func getJson_TouchUp(sender: AnyObject) {
@@ -74,7 +75,9 @@ class ViewController: UIViewController {
                 })
             }
         }
-        
+    }
+    
+    func test() {
 /*
         photos.get() { (result) in
             
@@ -84,13 +87,14 @@ class ViewController: UIViewController {
                 }
             })
         }
+
+        println(car.toJsonString())
+        println()
+        var tests = SampleApi<TestEntity>()
+        var test = TestEntity()
+        var text = test.toJsonString()
+        println(text)
 */
-    }
-    
-    func test() {
-        photos.post() { (result) in
-            println(result.text)
-        }
     }
     
     override func didReceiveMemoryWarning() {

@@ -10,8 +10,16 @@ import Foundation
 
 class Http {
 
-    func get(url: NSURL, completionHandler: ((result: HttpResult) -> Void)!) {
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
+    func get(url: NSURL, headers: Dictionary<String, String>, completionHandler: ((result: HttpResult) -> Void)!) {
+
+        let httpRequest = NSMutableURLRequest(URL: url)
+        httpRequest.HTTPMethod = "GET"
+
+        for (headerKey, headerValue) in headers {
+            httpRequest.setValue(headerValue, forHTTPHeaderField: headerKey)
+        }
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(httpRequest) { (data, response, error) in
             
             let httpResponse: NSHTTPURLResponse = response as NSHTTPURLResponse
             if httpResponse.statusCode == 200 {
@@ -25,11 +33,15 @@ class Http {
         task.resume()
     }
     
-    func post(url: NSURL, data: NSData, completionHandler: ((result: HttpResult) -> Void)!) {
+    func post(url: NSURL, headers: Dictionary<String, String>, data: NSData, completionHandler: ((result: HttpResult) -> Void)!) {
         
         let httpRequest = NSMutableURLRequest(URL: url)
         httpRequest.HTTPMethod = "POST"
 
+        for (headerKey, headerValue) in headers {
+            httpRequest.setValue(headerValue, forHTTPHeaderField: headerKey)
+        }
+        
         let task = NSURLSession.sharedSession().uploadTaskWithRequest(httpRequest, fromData: data) { (data, response, error) in
 
             let httpResponse = response as NSHTTPURLResponse
@@ -51,6 +63,13 @@ class HttpResult {
     var error: NSError?
     var statusCode: Int = 0
     var success: Bool = false
+    var headers : Dictionary<String, String> {
+        get {
+            var headerDictionary = response?.allHeaderFields as Dictionary<String,String>
+            return headerDictionary
+        }
+    }
+    
     init(data: NSData?, response: NSHTTPURLResponse?, error : NSError?) {
         self.data = data
         self.response = response

@@ -15,6 +15,6 @@ class Photo : Jsonable {
     var id = 0
     var albumId = 0
     var title = ""
-    var url = NSURL()
-    var thumbnailUrl = NSURL()
+    var url = NSURL()       // Urls can be stored as Strings or NSURL types which will be converted to strings in Json
+    var thumbnailUrl = ""
 }

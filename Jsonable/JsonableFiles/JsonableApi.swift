@@ -10,8 +10,13 @@ import Foundation
 
 class Api<T:Jsonable> : SequenceType {
     
+    init() {
+        headers["Content-Type"] = "application/json"    
+    }
+    
     var entityList : [T] = []
-    var baseUrl: String { get { return "" } }
+    var baseUrl: String = ""
+    var headers = Dictionary<String, String>()
     
     func entityBaseUrl() -> NSURL {
         var url = "\(baseUrl)\(T.urlName())"
@@ -28,7 +33,7 @@ class Api<T:Jsonable> : SequenceType {
     //
     func get(completionHandler: ((result: HttpResult) -> Void)!) {
 
-        Http().get(self.entityBaseUrl()) { (result) in
+        Http().get(self.entityBaseUrl(), headers: headers) { (result) in
             
             var error: NSError?
             if let jsonArray: AnyObject? = NSJSONSerialization.JSONObjectWithData(result.data!,
@@ -44,7 +49,7 @@ class Api<T:Jsonable> : SequenceType {
     //
     func get(id: String, completionHandler: ((result: HttpResult) -> Void)!) {
         
-        Http().get(self.entityUrl(id)) { (result) in
+        Http().get(self.entityUrl(id), headers: headers) { (result) in
 
             let entity = self.createType()
             entity.fromJsonData(result.data!)
@@ -69,12 +74,24 @@ class Api<T:Jsonable> : SequenceType {
         var jsonArray = swiftArrayToJsonArray()
         var jsonData = NSJSONSerialization.dataWithJSONObject(jsonArray, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
 
-        Http().post(self.entityBaseUrl(), data:jsonData!) { (result) in
+        Http().post(self.entityBaseUrl(), headers: headers, data:jsonData!) { (result) in
             
-            // Update Swift objects with any newly created Id's returned from the POST
-            
+            // After getting result, allow for post processing            
+            if result.headers["Content-Type"]!.contains("application/json") {
+                if let resultJsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(result.data!, options: .AllowFragments, error: &error) as AnyObject? {
+                        for index in 0..<self.entityList.count {
+                        var entity = self.entityList[index]
+                        self.postResponseUpdate(index, entity: entity, resultJsonObject: resultJsonObject)
+                    }
+                }
+            }
             completionHandler(result: result)
         }
+    }
+    
+    // Update Swift objects with any newly created Id's returned from the POST
+    func postResponseUpdate(index: Int, entity: Jsonable, resultJsonObject: AnyObject) {
+        // virtual
     }
     
     func jsonArrayToSwiftArray(jsonArray: NSArray) -> [T] {
