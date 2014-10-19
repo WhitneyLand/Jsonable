@@ -12,7 +12,8 @@ class Jsonable : NSObject {
     class func urlName() -> String { return "" }
     class func dateFormat() -> String { return DateFormat.Iso8601 }
     class func createInstance() -> Jsonable { return Jsonable() }
-    
+
+    var moreProperties = Dictionary<String, AnyObject?>()
     
     func toJsonString() -> NSString! {
         return NSString(data: self.toJsonData(), encoding: NSUTF8StringEncoding)
@@ -146,12 +147,17 @@ class Jsonable : NSObject {
     }
     
     func fromJsonDictionary(d: NSDictionary) {
-        
         for (key,value) in d {
             let propertyName = key as String
-            setValue(value, forKey: propertyName)
+            
+            if respondsToSelector(Selector(propertyName)) {
+                setValue(value, forKey: propertyName)
+            }
+            else {
+                moreProperties[propertyName] = value
+                println("No class property for: \(propertyName)")
+            }
         }
-        //        setValuesForKeysWithDictionary(d)
     }
     
     func fromJsonData(data: NSData) {
