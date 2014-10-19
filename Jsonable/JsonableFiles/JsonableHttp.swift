@@ -21,14 +21,14 @@ class Http {
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(httpRequest) { (data, response, error) in
             
-            let httpResponse: NSHTTPURLResponse = response as NSHTTPURLResponse
+            let httpResponse = response as NSHTTPURLResponse
             if httpResponse.statusCode == 200 {
             }
             else {
-                println("Http.get failed network: \(httpResponse.statusCode) \(httpResponse.URL)")
+                println("Http.\(httpRequest.HTTPMethod) failed: \(httpResponse.statusCode) \(httpResponse.URL)")
             }
             var result = HttpResult(data: data, response: httpResponse, error: error)
-            completionHandler(result: result)
+            completionHandler(result: result)            
         }
         task.resume()
     }
@@ -48,7 +48,51 @@ class Http {
             if httpResponse.statusCode == 200 {
             }
             else {
-                println("Http.post failed network: \(httpResponse.statusCode) \(httpResponse.URL)")
+                println("Http.\(httpRequest.HTTPMethod) failed: \(httpResponse.statusCode) \(httpResponse.URL)")
+            }
+            completionHandler(result: HttpResult(data: data, response: httpResponse, error: error))
+        }
+        task.resume()
+    }
+    
+    func put(url: NSURL, headers: Dictionary<String, String>, data: NSData, completionHandler: ((result: HttpResult) -> Void)!) {
+        
+        let httpRequest = NSMutableURLRequest(URL: url)
+        httpRequest.HTTPMethod = "PUT"
+        
+        for (headerKey, headerValue) in headers {
+            httpRequest.setValue(headerValue, forHTTPHeaderField: headerKey)
+        }
+        
+        let task = NSURLSession.sharedSession().uploadTaskWithRequest(httpRequest, fromData: data) { (data, response, error) in
+            
+            let httpResponse = response as NSHTTPURLResponse
+            if httpResponse.statusCode == 200 {
+            }
+            else {
+                println("Http.\(httpRequest.HTTPMethod) failed: \(httpResponse.statusCode) \(httpResponse.URL)")
+            }
+            completionHandler(result: HttpResult(data: data, response: httpResponse, error: error))
+        }
+        task.resume()
+    }
+    
+    func delete(url: NSURL, headers: Dictionary<String, String>, data: NSData, completionHandler: ((result: HttpResult) -> Void)!) {
+        
+        let httpRequest = NSMutableURLRequest(URL: url)
+        httpRequest.HTTPMethod = "DELETE"
+        
+        for (headerKey, headerValue) in headers {
+            httpRequest.setValue(headerValue, forHTTPHeaderField: headerKey)
+        }
+        
+        let task = NSURLSession.sharedSession().uploadTaskWithRequest(httpRequest, fromData: data) { (data, response, error) in
+            
+            let httpResponse = response as NSHTTPURLResponse
+            if httpResponse.statusCode == 200 {
+            }
+            else {
+                println("Http.\(httpRequest.HTTPMethod) failed: \(httpResponse.statusCode) \(httpResponse.URL)")
             }
             completionHandler(result: HttpResult(data: data, response: httpResponse, error: error))
         }

@@ -22,8 +22,8 @@ extension NSDate {
         dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         let d = dateStringFormatter.dateFromString(iso)
         self.init(timeInterval:0, sinceDate:d!)
-        
     }
+    
     // Example:
     //  var date = NSDate(isoDate:"2014-09-19T07:22:00Z")
     //  println(date.stringFromFormat("h:mm a"))
@@ -58,6 +58,27 @@ extension NSDate {
 
 extension String {
     
+    //  http://stackoverflow.com/a/25004154/700206
+    init(sep:String, _ lines:String...){
+        self = ""
+        for (idx, item) in enumerate(lines) {
+            self += "\(item)"
+            if idx < lines.count-1 {
+                self += sep
+            }
+        }
+    }
+    
+    init(_ lines:String...){
+        self = ""
+        for (idx, item) in enumerate(lines) {
+            self += "\(item)"
+            if idx < lines.count-1 {
+                self += "\n"
+            }
+        }
+    }
+    
     func contains(find: String) -> Bool{
         if let temp = self.rangeOfString(find){
             return true
@@ -66,6 +87,7 @@ extension String {
     }
 }
 
+// experimental
 class Reflector {
     class func getDescription(obj: AnyObject?) -> String {
         var s: String = ""
@@ -78,8 +100,9 @@ class Reflector {
     class func listProperties(mirror: MirrorType) -> String
     {
         var s: String = ""
-        for (var i=0;i<mirror.count;i++)
-        {
+        var propertyCount: Int = mirror.count
+
+        for i in 0..<propertyCount {
             if (mirror[i].0 == "super")
             {
                 s += listProperties(mirror[i].1)
@@ -93,13 +116,11 @@ class Reflector {
                     s += "  []: \(mirror[i].1.count) items."
                     return s
                 }
-                
                 if name == "__test" {
                     var summary = mirror[i].1.summary
                     var valueType = mirror[i].1.valueType
                     var count = mirror[i].1.count
                 }
-                
                 s += "  \(name): \(value)\n"
             }
         }

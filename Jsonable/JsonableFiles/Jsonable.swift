@@ -13,27 +13,6 @@ class Jsonable : NSObject {
     class func dateFormat() -> String { return DateFormat.Iso8601 }
     class func createInstance() -> Jsonable { return Jsonable() }
     
-    func fromJsonDictionary(d: NSDictionary) {
-        
-        for (key,value) in d {
-            let propertyName = key as String
-            setValue(value, forKey: propertyName)
-        }
-//        setValuesForKeysWithDictionary(d)
-    }
-    
-    func fromJsonData(data: NSData) {
-        var jsonError: NSError?
-        let jsonObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data,
-            options: .AllowFragments,
-            error: &jsonError)
-        fromJsonDictionary(jsonObject as NSDictionary)
-    }
-    
-    func fromJsonString(text: String) {
-        let data = text.dataUsingEncoding(NSUTF8StringEncoding)!
-        fromJsonData(data)
-    }
     
     func toJsonString() -> NSString! {
         return NSString(data: self.toJsonData(), encoding: NSUTF8StringEncoding)
@@ -47,12 +26,12 @@ class Jsonable : NSObject {
     
     func toJsonDictionary() -> NSDictionary {
         
-        let aClass : AnyClass? = self.dynamicType
         var propertiesCount : CUnsignedInt = 0
-        let propertiesInAClass = class_copyPropertyList(aClass, &propertiesCount)
+        let propertiesInAClass = class_copyPropertyList(self.dynamicType, &propertiesCount)
         let props : NSMutableDictionary = NSMutableDictionary()
         
-        for var i = 0; i < Int(propertiesCount); i++ {
+        for i in 0..<Int(propertiesCount) {
+
             let property = propertiesInAClass[i]
             let propName = NSString(CString: property_getName(property), encoding: NSUTF8StringEncoding)!
             let propType = property_getAttributes(property)
@@ -62,40 +41,22 @@ class Jsonable : NSObject {
             let propTypeCodeAttributes = propTypeCode.componentsSeparatedByString(",")
             let typeAttribute = propTypeCodeAttributes[0]
 
-            // T@           String | Array
-            // T@"NSDate"   NSDate
-            // T@"<name>"   custom object
-            // TB           Bool
-            // Td           Double
-            // Tf           Float
-            // Tq           Int
-            // TQ           Int            
-            var typeName = ""
             if typeAttribute.contains("TB") {
-                typeName = "Bool"
                 props.setValue(propValue as Bool, forKey: propName)
             }
             else if typeAttribute.contains("Td") {
-                typeName = "Double"
                 props.setValue(propValue as Double, forKey: propName)
             }
             else if typeAttribute.contains("Tf") {
-                typeName = "Float"
                 props.setValue(propValue as Float, forKey: propName)
             }
             else if typeAttribute.contains("Tq") {
-                typeName = "Int"
                 props.setValue(propValue as Int, forKey: propName)
             }
             else if typeAttribute.contains("TQ") {
-                typeName = "Int"
                 props.setValue(propValue as UInt, forKey: propName)
             }
-            else if typeAttribute.contains("T@") {
-                typeName = "Object"
-            }
-            
-            if typeName == "Object" {
+            else if typeAttribute.contains("T@") {  // Object
                 switch(propValue) {
                     case let dateValue as NSDate:
                         props.setValue(dateValue.stringFromFormat(Jsonable.dateFormat()), forKey: propName)
@@ -118,16 +79,93 @@ class Jsonable : NSObject {
         }
         return props
     }
-}
-
-extension Jsonable {
+    
+    func toDescription() -> String {
+        var s = ""
+        var propertiesCount : CUnsignedInt = 0
+        let propertiesInAClass = class_copyPropertyList(self.dynamicType, &propertiesCount)
+        let props : NSMutableDictionary = NSMutableDictionary()
+        
+        for i in 0..<Int(propertiesCount) {
+            
+            let property = propertiesInAClass[i]
+            let propName = NSString(CString: property_getName(property), encoding: NSUTF8StringEncoding)!
+            let propType = property_getAttributes(property)
+            let propValue : AnyObject? = self.valueForKey(propName);
+            
+            let propTypeCode = String.fromCString(propType)!
+            let propTypeCodeAttributes = propTypeCode.componentsSeparatedByString(",")
+            let typeAttribute = propTypeCodeAttributes[0]
+            
+            if typeAttribute.contains("TB") {
+                s = s + "  \(propName): \(propValue as Bool)\n"
+            }
+            else if typeAttribute.contains("Td") {
+                s = s + "  \(propName): \(propValue as Double)\n"
+            }
+            else if typeAttribute.contains("Tf") {
+                s = s + "  \(propName): \(propValue as Float)\n"
+            }
+            else if typeAttribute.contains("Tq") {
+                s = s + "  \(propName): \(propValue as Int)\n"
+            }
+            else if typeAttribute.contains("TQ") {
+                s = s + "  \(propName): \(propValue as UInt)\n"
+            }
+            else if typeAttribute.contains("T@") {  // Object
+                switch(propValue) {
+                    case let stringValue as NSString:
+                    s = s + "  \(propName): \(stringValue)\n"
+                    case let dateValue as NSDate:
+                        s = s + "  \(propName): \(dateValue.stringFromFormat(Jsonable.dateFormat()))\n"
+                    case let urlValue as NSURL:
+                        s = s + "  \(propName): \(urlValue.absoluteString)\n"
+                    case let dataValue as NSData:
+                        s = s + "  \(propName): \(dataValue.base64EncodedStringWithOptions(nil))\n"
+                    case let arrayValue as Array<Jsonable>:
+                        for item in arrayValue {
+                            item.toDescription()
+                        }
+                    case let objectValue as Jsonable:
+                        objectValue.toDescription()
+                    default:
+                        s = s + "  \(propName): \(propValue)\n"
+                }
+            }
+        }
+        return s
+    }
+    
     override var description: String {
         get {
             var s: String = ""
-            var mirror=reflect(self)
-            s += mirror.summary + "\n"
-            s += Reflector.listProperties(mirror)
+            s += "\(self.dynamicType.description())\n"
+            s += self.toDescription()
             return s
         }
     }
+    
+    func fromJsonDictionary(d: NSDictionary) {
+        
+        for (key,value) in d {
+            let propertyName = key as String
+            setValue(value, forKey: propertyName)
+        }
+        //        setValuesForKeysWithDictionary(d)
+    }
+    
+    func fromJsonData(data: NSData) {
+        var jsonError: NSError?
+        let jsonObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data,
+            options: .AllowFragments,
+            error: &jsonError)
+        fromJsonDictionary(jsonObject as NSDictionary)
+    }
+    
+    func fromJsonString(text: String) {
+        let data = text.dataUsingEncoding(NSUTF8StringEncoding)!
+        fromJsonData(data)
+    }
 }
+
+

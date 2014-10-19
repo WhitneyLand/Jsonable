@@ -15,16 +15,17 @@ class ViewController: UIViewController {
     @IBOutlet weak var getJsonButton: UIButton!
     @IBOutlet weak var getSwiftButton: UIButton!
     
-    var car = Car()
-    var photos = SampleApi<Photo>()
-    var users = SampleApi<User>()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
     }
 
+    //--------------------------------------------------
+    //  Convert a Swift object to JSON
+    //
     @IBAction func getJson_TouchUp(sender: AnyObject) {
+
+        var car = Car()
         
         car.manufacturer = "Porche"
         car.height = 51.02
@@ -57,11 +58,63 @@ class ViewController: UIViewController {
         carGuage2.analog = true
         car.gauges.append(carGuage2)
         
-        //jsonView.text = car.description        
         jsonView.text = car.toJsonString()
     }
 
+    //---------------------------------------------------
+    //  Convert JSON to a Swift object
+    //
     @IBAction func getSwift_TouchUp(sender: AnyObject) {
+        
+        var json = String(sep:" ",
+            "{",
+            "    \"cabriolet\": true,",
+            "    \"maxSpeed\": 197,",
+            "    \"doors\": 2,",
+            "    \"url\": \"http://whitneyland.com\",",
+            "    \"weight\": 3538,",
+            "    \"engine\": {",
+            "        \"horsePower\": 560,",
+            "        \"turbo\": true,",
+            "        \"torque\": 516.2,",
+            "        \"cooling\": \"Water\"",
+            "    },",
+            "    \"gauges\": [",
+            "        {",
+            "            \"size\": 4,",
+            "            \"analog\": true,",
+            "            \"name\": \"Spedometer\",",
+            "            \"max\": 200",
+            "        },",
+            "        {",
+            "            \"size\": 6,",
+            "            \"analog\": true,",
+            "            \"name\": \"Tachometer\",",
+            "            \"max\": 9000",
+            "        }",
+            "    ],",
+            "    \"manufacturer\": \"Porche\",",
+            "    \"height\": 51.02,",
+            "    \"upgrades\": [",
+            "        \"Leather Dashboard\",",
+            "        \"Sport Chrono\"",
+            "    ],",
+            "    \"pcodes\": [],",
+            "    \"buildDate\": \"2014-09-19T02:22:00-05:00\"",
+            "}")
+        
+        var car = Car()
+        car.fromJsonString(json)
+        swiftView.text = car.description
+    }
+
+    //---------------------------------------------
+    // Use swift classes in API
+    //
+    var photos = SampleApi<Photo>()
+    var users = SampleApi<User>()
+    
+    func apiTests() {
         
         users.get(1) { (result) in
             
@@ -75,9 +128,6 @@ class ViewController: UIViewController {
                 })
             }
         }
-    }
-    
-    func test() {
 /*
         photos.get() { (result) in
             

@@ -15,8 +15,8 @@ class SampleApi<T:Jsonable> : Api<T> {
         baseUrl = "http://jsonplaceholder.typicode.com/"
     }
     
-
-    override func postResponseUpdate(index: Int, entity: Jsonable, resultJsonObject: AnyObject) {
+    // Global post event handler
+    override func postResponse(index: Int, entity: Jsonable, resultJsonObject: AnyObject, result: HttpResult) {
         
         if let array = resultJsonObject as? NSArray {
             println("Received JSON Array response.")
@@ -27,14 +27,5 @@ class SampleApi<T:Jsonable> : Api<T> {
         else if let item = resultJsonObject as? NSDictionary {
             println("Received JSON Object response.")
         }
-        
-/*
-        var photo: Photo = entity as Photo
-        photo.id = 3
-        photo.albumId = 5
-        photo.url = NSURL(string: "http://")!
-        photo.thumbnailUrl = "ftp://"
-        println(photo)
-*/
     }
 }

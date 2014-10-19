@@ -40,6 +40,17 @@ class Api<T:Jsonable> : SequenceType {
                 options: .AllowFragments, error: &error) as AnyObject! {
                 self.entityList = self.jsonArrayToSwiftArray(jsonArray as NSArray)
             }
+            
+            // If successful fire global event handler
+            if result.headers["Content-Type"]!.contains("application/json") {
+                if let resultJsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(result.data!, options: .AllowFragments, error: &error) as AnyObject? {
+                    for index in 0..<self.entityList.count {
+                        var entity = self.entityList[index]
+                        self.getResponse(index, entity: entity, resultJsonObject: resultJsonObject, result: result)
+                    }
+                }
+            }
+
             completionHandler(result: result)
         }
     }
@@ -48,12 +59,24 @@ class Api<T:Jsonable> : SequenceType {
     // Get a single Json object and deserialize it to Swift
     //
     func get(id: String, completionHandler: ((result: HttpResult) -> Void)!) {
-        
+
         Http().get(self.entityUrl(id), headers: headers) { (result) in
 
             let entity = self.createType()
             entity.fromJsonData(result.data!)
             self.entityList.append(entity)
+            
+            // If successful fire global event handler
+            var error: NSError?            
+            if result.headers["Content-Type"]!.contains("application/json") {
+                if let resultJsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(result.data!, options: .AllowFragments, error: &error) as AnyObject? {
+                    for index in 0..<self.entityList.count {
+                        var entity = self.entityList[index]
+                        self.getResponse(index, entity: entity, resultJsonObject: resultJsonObject, result: result)
+                    }
+                }
+            }
+            
             completionHandler(result: result)
         }
     }
@@ -65,7 +88,6 @@ class Api<T:Jsonable> : SequenceType {
     }
     
     //
-    // TODO:
     // Post Json from array of serialized Swift objects
     //
     func post(completionHandler: ((result: HttpResult) -> Void)!) {
@@ -81,7 +103,31 @@ class Api<T:Jsonable> : SequenceType {
                 if let resultJsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(result.data!, options: .AllowFragments, error: &error) as AnyObject? {
                         for index in 0..<self.entityList.count {
                         var entity = self.entityList[index]
-                        self.postResponseUpdate(index, entity: entity, resultJsonObject: resultJsonObject)
+                        self.postResponse(index, entity: entity, resultJsonObject: resultJsonObject, result: result)
+                    }
+                }
+            }
+            completionHandler(result: result)
+        }
+    }
+
+    //
+    // Update Json from array of serialized Swift objects
+    //
+    func put(completionHandler: ((result: HttpResult) -> Void)!) {
+        
+        var error: NSError?
+        var jsonArray = swiftArrayToJsonArray()
+        var jsonData = NSJSONSerialization.dataWithJSONObject(jsonArray, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
+        
+        Http().put(self.entityBaseUrl(), headers: headers, data:jsonData!) { (result) in
+            
+            // After getting result, allow for post processing
+            if result.headers["Content-Type"]!.contains("application/json") {
+                if let resultJsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(result.data!, options: .AllowFragments, error: &error) as AnyObject? {
+                    for index in 0..<self.entityList.count {
+                        var entity = self.entityList[index]
+                        self.putResponse(index, entity: entity, resultJsonObject: resultJsonObject, result: result)
                     }
                 }
             }
@@ -89,9 +135,46 @@ class Api<T:Jsonable> : SequenceType {
         }
     }
     
-    // Update Swift objects with any newly created Id's returned from the POST
-    func postResponseUpdate(index: Int, entity: Jsonable, resultJsonObject: AnyObject) {
-        // virtual
+    //
+    // Delete Json based on array of serialized Swift objects
+    //
+    func delete(completionHandler: ((result: HttpResult) -> Void)!) {
+        
+        var error: NSError?
+        var jsonArray = swiftArrayToJsonArray()
+        var jsonData = NSJSONSerialization.dataWithJSONObject(jsonArray, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
+        
+        Http().delete(self.entityBaseUrl(), headers: headers, data:jsonData!) { (result) in
+            
+            // If successful fire global event handler
+            if result.headers["Content-Type"]!.contains("application/json") {
+                if let resultJsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(result.data!, options: .AllowFragments, error: &error) as AnyObject? {
+                    for index in 0..<self.entityList.count {
+                        var entity = self.entityList[index]
+                        self.deleteResponse(index, entity: entity, resultJsonObject: resultJsonObject, result: result)
+                    }
+                }
+            }
+            completionHandler(result: result)
+        }
+    }
+    
+    // -----------------------------
+    // Global event handlers 
+    // Virtual methods will be called when overriden
+    //
+    
+    // Client can update Swift objects with any newly created Id's returned from POST
+    func getResponse(index: Int, entity: Jsonable, resultJsonObject: AnyObject, result: HttpResult) {
+    }
+
+    func postResponse(index: Int, entity: Jsonable, resultJsonObject: AnyObject, result: HttpResult) {
+    }
+    
+    func putResponse(index: Int, entity: Jsonable, resultJsonObject: AnyObject, result: HttpResult) {
+    }
+    
+    func deleteResponse(index: Int, entity: Jsonable, resultJsonObject: AnyObject, result: HttpResult) {
     }
     
     func jsonArrayToSwiftArray(jsonArray: NSArray) -> [T] {
