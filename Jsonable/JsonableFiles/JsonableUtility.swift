@@ -17,15 +17,22 @@ extension NSDate {
     
     // ISO 8601, example: 2014-09-19T07:22:00Z
     convenience init(iso: String) {
+        var isoDateString: String?
+        if iso.length == 10 {           // Allow shortcut like this:  2014-09-19
+            isoDateString = "\(iso)T00:00:00Z"
+        }
+        else {
+            isoDateString = iso
+        }
         let dateStringFormatter = NSDateFormatter()
         dateStringFormatter.dateFormat = DateFormat.Iso8601
         dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-        let d = dateStringFormatter.dateFromString(iso)
+        let d = dateStringFormatter.dateFromString(isoDateString!)
         self.init(timeInterval:0, sinceDate:d!)
     }
     
     // Example:
-    //  var date = NSDate(isoDate:"2014-09-19T07:22:00Z")
+    //  var date = NSDate(iso: "2014-09-19T07:22:00Z")
     //  println(date.stringFromFormat("h:mm a"))
     //  println(date.stringFromFormat("M/d/yyyy"))
     //
@@ -57,6 +64,24 @@ extension NSDate {
 }
 
 extension String {
+
+    var length: Int {
+        get {
+            return countElements(self)
+        }
+    }
+    
+    func contains(find: String) -> Bool{
+        if let temp = self.rangeOfString(find){
+            return true
+        }
+        return false
+    }
+    
+    func replace(target: String, withString: String) -> String
+    {
+        return self.stringByReplacingOccurrencesOfString(target, withString: withString, options: NSStringCompareOptions.LiteralSearch, range: nil)
+    }
     
     //  http://stackoverflow.com/a/25004154/700206
     init(sep:String, _ lines:String...){
@@ -77,13 +102,6 @@ extension String {
                 self += "\n"
             }
         }
-    }
-    
-    func contains(find: String) -> Bool{
-        if let temp = self.rangeOfString(find){
-            return true
-        }
-        return false
     }
 }
 

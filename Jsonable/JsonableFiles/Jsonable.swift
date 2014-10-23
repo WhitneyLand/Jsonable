@@ -151,12 +151,27 @@ class Jsonable : NSObject {
             let propertyName = key as String
             
             if respondsToSelector(Selector(propertyName)) {
-                setValue(value, forKey: propertyName)
+                super.setValue(value, forKey: propertyName)
             }
             else {
                 moreProperties[propertyName] = value
-                println("No class property for: \(propertyName)")
+                println("\(className) property not found: \(key)")
             }
+        }
+    }
+    
+    override func setValue(value: AnyObject?, forKey key: String) {
+        if respondsToSelector(Selector(key)) {
+            super.setValue(value, forKey: key)
+        }
+        else {
+            println("\(className) property not found: \(key)")
+        }
+    }
+    
+    var className: String {
+        get {
+            return self.dynamicType.description()
         }
     }
     

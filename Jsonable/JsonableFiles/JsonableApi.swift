@@ -35,22 +35,18 @@ class Api<T:Jsonable> : SequenceType {
 
         Http().get(self.entityBaseUrl(), headers: headers) { (result) in
             
-            var error: NSError?
-            if let jsonArray: AnyObject? = NSJSONSerialization.JSONObjectWithData(result.data!,
-                options: .AllowFragments, error: &error) as AnyObject! {
-                self.entityList = self.jsonArrayToSwiftArray(jsonArray as NSArray)
-            }
-            
-            // If successful fire global event handler
-            if result.headers["Content-Type"]!.contains("application/json") {
-                if let resultJsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(result.data!, options: .AllowFragments, error: &error) as AnyObject? {
+            if result.success {
+                if let jsonObject: AnyObject = result.jsonObject {
+
+                    self.entityList = self.jsonArrayToSwiftArray(jsonObject as NSArray)
+                    
+                    // If successful fire global event handler
                     for index in 0..<self.entityList.count {
                         var entity = self.entityList[index]
-                        self.getResponse(index, entity: entity, resultJsonObject: resultJsonObject, result: result)
+                        self.getResponse(index, entity: entity, resultJsonObject: jsonObject, result: result)
                     }
                 }
             }
-
             completionHandler(result: result)
         }
     }
@@ -62,17 +58,16 @@ class Api<T:Jsonable> : SequenceType {
 
         Http().get(self.entityUrl(id), headers: headers) { (result) in
 
-            let entity = self.createType()
-            entity.fromJsonData(result.data!)
-            self.entityList.append(entity)
-            
-            // If successful fire global event handler
-            var error: NSError?            
-            if result.headers["Content-Type"]!.contains("application/json") {
-                if let resultJsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(result.data!, options: .AllowFragments, error: &error) as AnyObject? {
+            if result.success {
+                if let jsonObject: AnyObject = result.jsonObject {
+                    let entity = self.createType()
+                    entity.fromJsonDictionary(jsonObject as NSDictionary)
+                    self.entityList.append(entity)
+
+                    // If successful fire global event handler
                     for index in 0..<self.entityList.count {
                         var entity = self.entityList[index]
-                        self.getResponse(index, entity: entity, resultJsonObject: resultJsonObject, result: result)
+                        self.getResponse(index, entity: entity, resultJsonObject: jsonObject, result: result)
                     }
                 }
             }
@@ -92,18 +87,21 @@ class Api<T:Jsonable> : SequenceType {
     //
     func post(completionHandler: ((result: HttpResult) -> Void)!) {
         
+        if entityList.count == 0 {
+            println("Warning: post called with no data.")
+        }
         var error: NSError?
         var jsonArray = swiftArrayToJsonArray()
         var jsonData = NSJSONSerialization.dataWithJSONObject(jsonArray, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
 
         Http().post(self.entityBaseUrl(), headers: headers, data:jsonData!) { (result) in
             
-            // After getting result, allow for post processing            
-            if result.headers["Content-Type"]!.contains("application/json") {
-                if let resultJsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(result.data!, options: .AllowFragments, error: &error) as AnyObject? {
-                        for index in 0..<self.entityList.count {
+            // After getting result, allow for post processing
+            if result.success {
+                if let jsonObject: AnyObject = result.jsonObject {
+                    for index in 0..<self.entityList.count {
                         var entity = self.entityList[index]
-                        self.postResponse(index, entity: entity, resultJsonObject: resultJsonObject, result: result)
+                        self.postResponse(index, entity: entity, resultJsonObject: jsonObject, result: result)
                     }
                 }
             }
@@ -116,18 +114,21 @@ class Api<T:Jsonable> : SequenceType {
     //
     func put(completionHandler: ((result: HttpResult) -> Void)!) {
         
+        if entityList.count == 0 {
+            println("Warning: put called with no data.")
+        }
         var error: NSError?
         var jsonArray = swiftArrayToJsonArray()
         var jsonData = NSJSONSerialization.dataWithJSONObject(jsonArray, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
         
         Http().put(self.entityBaseUrl(), headers: headers, data:jsonData!) { (result) in
-            
+
             // After getting result, allow for post processing
-            if result.headers["Content-Type"]!.contains("application/json") {
-                if let resultJsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(result.data!, options: .AllowFragments, error: &error) as AnyObject? {
+            if result.success {
+                if let jsonObject: AnyObject = result.jsonObject {
                     for index in 0..<self.entityList.count {
                         var entity = self.entityList[index]
-                        self.putResponse(index, entity: entity, resultJsonObject: resultJsonObject, result: result)
+                        self.putResponse(index, entity: entity, resultJsonObject: jsonObject, result: result)
                     }
                 }
             }
@@ -140,22 +141,46 @@ class Api<T:Jsonable> : SequenceType {
     //
     func delete(completionHandler: ((result: HttpResult) -> Void)!) {
         
+        if entityList.count == 0 {
+            println("Warning: delete called with no data.")
+        }
         var error: NSError?
         var jsonArray = swiftArrayToJsonArray()
         var jsonData = NSJSONSerialization.dataWithJSONObject(jsonArray, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
         
         Http().delete(self.entityBaseUrl(), headers: headers, data:jsonData!) { (result) in
             
-            // If successful fire global event handler
-            if result.headers["Content-Type"]!.contains("application/json") {
-                if let resultJsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(result.data!, options: .AllowFragments, error: &error) as AnyObject? {
-                    for index in 0..<self.entityList.count {
-                        var entity = self.entityList[index]
-                        self.deleteResponse(index, entity: entity, resultJsonObject: resultJsonObject, result: result)
+            // After getting result, allow for post processing
+            if result.success {
+                if result.headers["Content-Type"]!.contains("application/json") {
+                    if let resultJsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(result.data!, options: .AllowFragments, error: &error) as AnyObject? {
+                        for index in 0..<self.entityList.count {
+                            var entity = self.entityList[index]
+                            self.deleteResponse(index, entity: entity, resultJsonObject: resultJsonObject, result: result)
+                        }
                     }
                 }
             }
             completionHandler(result: result)
+        }
+    }
+    
+    // allow calls with no return value or completion handler
+    func post() {
+        var result = HttpResult()
+        self.delete() { (result) in
+        }
+    }
+
+    func put() {
+        var result = HttpResult()
+        self.delete() { (result) in
+        }
+    }
+
+    func delete() {
+        var result = HttpResult()
+        self.delete() { (result) in
         }
     }
     
@@ -220,6 +245,12 @@ class Api<T:Jsonable> : SequenceType {
     
     func append(newEntity : T) {
         entityList.append(newEntity)
+    }
+    
+    var count: Int {
+        get {
+            return entityList.count
+        }
     }
     
     // Work around for Swift generics not supporting virtual constructors
