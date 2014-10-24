@@ -11,7 +11,7 @@ import Foundation
 class Api<T:Jsonable> : SequenceType {
     
     init() {
-        headers["Content-Type"] = "application/json"    
+        headers["Content-Type"] = "application/json"
     }
     
     var entityList : [T] = []
@@ -43,7 +43,8 @@ class Api<T:Jsonable> : SequenceType {
                     // If successful fire global event handler
                     for index in 0..<self.entityList.count {
                         var entity = self.entityList[index]
-                        self.getResponse(index, entity: entity, resultJsonObject: jsonObject, result: result)
+                        var apiNotification = ApiNotification(index: index, entity: entity, jsonObject: jsonObject, result: result)
+                        self.getApiNotification(apiNotification)
                     }
                 }
             }
@@ -66,8 +67,8 @@ class Api<T:Jsonable> : SequenceType {
 
                     // If successful fire global event handler
                     for index in 0..<self.entityList.count {
-                        var entity = self.entityList[index]
-                        self.getResponse(index, entity: entity, resultJsonObject: jsonObject, result: result)
+                        var apiNotification = ApiNotification(index: index, entity: entity, jsonObject: jsonObject, result: result)
+                        self.getApiNotification(apiNotification)
                     }
                 }
             }
@@ -101,7 +102,8 @@ class Api<T:Jsonable> : SequenceType {
                 if let jsonObject: AnyObject = result.jsonObject {
                     for index in 0..<self.entityList.count {
                         var entity = self.entityList[index]
-                        self.postResponse(index, entity: entity, resultJsonObject: jsonObject, result: result)
+                        var apiNotification = ApiNotification(index: index, entity: entity, jsonObject: jsonObject, result: result)
+                        self.postApiNotification(apiNotification)
                     }
                 }
             }
@@ -128,7 +130,8 @@ class Api<T:Jsonable> : SequenceType {
                 if let jsonObject: AnyObject = result.jsonObject {
                     for index in 0..<self.entityList.count {
                         var entity = self.entityList[index]
-                        self.putResponse(index, entity: entity, resultJsonObject: jsonObject, result: result)
+                        var apiNotification = ApiNotification(index: index, entity: entity, jsonObject: jsonObject, result: result)
+                        self.putApiNotification(apiNotification)
                     }
                 }
             }
@@ -153,10 +156,11 @@ class Api<T:Jsonable> : SequenceType {
             // After getting result, allow for post processing
             if result.success {
                 if result.headers["Content-Type"]!.contains("application/json") {
-                    if let resultJsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(result.data!, options: .AllowFragments, error: &error) as AnyObject? {
+                    if let jsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(result.data!, options: .AllowFragments, error: &error) as AnyObject? {
                         for index in 0..<self.entityList.count {
                             var entity = self.entityList[index]
-                            self.deleteResponse(index, entity: entity, resultJsonObject: resultJsonObject, result: result)
+                            var apiNotification = ApiNotification(index: index, entity: entity, jsonObject: jsonObject, result: result)
+                            self.deleteApiNotification(apiNotification)
                         }
                     }
                 }
@@ -190,16 +194,16 @@ class Api<T:Jsonable> : SequenceType {
     //
     
     // Client can update Swift objects with any newly created Id's returned from POST
-    func getResponse(index: Int, entity: Jsonable, resultJsonObject: AnyObject, result: HttpResult) {
+    func getApiNotification(apiNotification: ApiNotification) {
     }
 
-    func postResponse(index: Int, entity: Jsonable, resultJsonObject: AnyObject, result: HttpResult) {
+    func postApiNotification(apiNotification: ApiNotification) {
     }
     
-    func putResponse(index: Int, entity: Jsonable, resultJsonObject: AnyObject, result: HttpResult) {
+    func putApiNotification(apiNotification: ApiNotification) {
     }
     
-    func deleteResponse(index: Int, entity: Jsonable, resultJsonObject: AnyObject, result: HttpResult) {
+    func deleteApiNotification(apiNotification: ApiNotification) {
     }
     
     func jsonArrayToSwiftArray(jsonArray: NSArray) -> [T] {
@@ -221,7 +225,29 @@ class Api<T:Jsonable> : SequenceType {
         }
         return array
     }
+
+
+    func toJsonString() -> String {
+        var s = ""
+        s += "\"\(T.urlName())\": [\n"
+        for i in 0..<entityList.count {
+            var entity = entityList[i]
+            s += entity.toJsonString()
+            if (i < entityList.count-1) {
+                s += ", \n"
+            }
+        }
+        s += "]"
+        return s
+    }
     
+    var className: String {
+        get {
+            let s = T.self.description()
+            return s.componentsSeparatedByString(".")[1]
+        }
+    }
+
     // Enable for-in iteration
     func generate() -> GeneratorOf<T> {
         var nextIndex = entityList.count-1
@@ -259,3 +285,19 @@ class Api<T:Jsonable> : SequenceType {
         return T.createInstance() as T
     }
 }
+
+class ApiNotification {
+
+    let index: Int
+    let entity: Jsonable
+    let jsonObject: AnyObject
+    let result: HttpResult
+    
+    init(index: Int, entity: Jsonable, jsonObject: AnyObject, result: HttpResult) {
+        self.index = index
+        self.entity = entity
+        self.jsonObject = jsonObject
+        self.result = result
+    }
+}
+

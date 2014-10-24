@@ -168,13 +168,14 @@ class Jsonable : NSObject {
             println("\(className) property not found: \(key)")
         }
     }
-    
+
     var className: String {
         get {
-            return self.dynamicType.description()
+            let s = self.dynamicType.description()
+            return s.componentsSeparatedByString(".")[1]
         }
     }
-    
+
     func fromJsonData(data: NSData) {
         var jsonError: NSError?
         let jsonObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data,
