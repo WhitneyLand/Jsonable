@@ -140,7 +140,7 @@ class Jsonable : NSObject {
     override var description: String {
         get {
             var s: String = ""
-            s += "\(self.dynamicType.description())\n"
+            s += "\(className)\n"
             s += self.toDescription()
             return s
         }
